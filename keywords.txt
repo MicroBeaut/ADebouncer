@@ -1,0 +1,30 @@
+#######################################
+# Syntax Coloring Map For ADebouncer
+#######################################
+
+#######################################
+# Datatypes (KEYWORD1)
+#######################################
+ADebouncer      KEYWORD1
+instant_t       KEYWORD1
+
+#######################################
+# Methods and Functions (KEYWORD2)
+#######################################
+mode            KEYWORD2
+debounce        KEYWORD2
+input           KEYWORD2
+debouncing      KEYWORD2
+debounced       KEYWORD2
+rising          KEYWORD2
+falling         KEYWORD2
+MS2US           KEYWORD2
+
+#######################################
+# Constants (LITERAL1)
+#######################################
+DELAYED                   LITERAL1
+INSTANT                   LITERAL1
+DEFAULT_DEBOUNCE_PERIOD   LITERAL1
+DEFAULT_DEBOUNCE_MODE     LITERAL1
+DEFAULT_INITIAL_OUTPUT    LITERAL1
