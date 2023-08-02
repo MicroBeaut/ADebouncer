@@ -21,5 +21,5 @@ void loop() {
   setButton.debounce(digitalRead(setPin));                              // Debounce input of the set button state.
   resetButton.debounce(digitalRead(resetPin));                          // Debounce input of the reset button state.
   state = (state | !setButton.debounced()) & resetButton.debounced();   // Reset and Set the state
-  digitalWrite(LED_BUILTIN, state);                                     // Update LED_BUILTIN with button state.
+  digitalWrite(LED_BUILTIN, state);                                     // Update LED_BUILTIN with the state.
 }

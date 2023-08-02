@@ -4,7 +4,7 @@ The advanced debounce removes the resulting ripple signal and provides a clean t
 ## Delayed Mode
 The delayed mode responds to the signal to update the output when input is stable for the fully qualified debounce period.
 <p align="center">
-	<img src="./images/adebouncer-delayed.svg" width="63%" />
+	<img src="./images/adebouncer-delayed.svg" width="100%" />
   <h3 align="center">Delayed Mode Timing Diagram</h3>
 </p>
 
@@ -12,7 +12,7 @@ The delayed mode responds to the signal to update the output when input is stabl
 The instant mode provides an instant response to the first edge on the signal to update the output and wait for the input to stable for the fully qualified debounce period for the next update.
 
 <p align="center">
-	<img src="./images/adebouncer-instant.svg" width="63%" />
+	<img src="./images/adebouncer-instant.svg" width="100%" />
   <h3 align="center">Instant Mode Timing Diagram</h3>
 </p>
 
@@ -136,13 +136,13 @@ if (debouncer.rising()) toggle = !toggle;
 
 ### Falling Edge of the output
 #### Syntax:
-*`bool fillingEdge = variable.falling();`*\
+*`bool fallingEdge = variable.falling();`*\
 Get the falling edge of the output.
 
 #### Example:
 ```c
-bool fillingEdge = debouncer.falling();
-if (fillingEdge) toggle = !toggle;
+bool fallingEdge = debouncer.falling();
+if (fallingEdge) toggle = !toggle;
 ```
 
 Or,

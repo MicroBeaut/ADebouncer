@@ -16,5 +16,5 @@ void setup() {
 void loop() {
   debouncer.debounce(digitalRead(buttonPin));   // Debounce input of the button state.
   if (debouncer.falling()) state = !state;      // Toggle state of the state variable.
-  digitalWrite(LED_BUILTIN, state);             // Update LED_BUILTIN with button state.
+  digitalWrite(LED_BUILTIN, state);             // Update LED_BUILTIN with the state.
 }
