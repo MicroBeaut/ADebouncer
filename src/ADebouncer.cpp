@@ -40,7 +40,7 @@ boolean ADebouncer::debounce(boolean input) {
     }
   }
   _rising = _output & !_prevOutput;
-  _falling = !_output & _prevOutput;
+  _falling = (!_output) & _prevOutput;
   return _output;
 }
 
