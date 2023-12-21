@@ -26,7 +26,7 @@ boolean ADebouncer::debounce(boolean input) {
   _prevInput = _input;
   _prevOutput = _output;
   _input = input;
-  if (_input != _prevInput) _debounceStartTime = currentTime;
+  if (_input ^ _prevInput) _debounceStartTime = currentTime;
   if (_debouncing) {
     unsigned long elapsedTime = currentTime - _debounceStartTime;
     if (elapsedTime >= _debouncePeriod) {
@@ -34,13 +34,13 @@ boolean ADebouncer::debounce(boolean input) {
       _output = _input;
     }
   } else {
-    if (_input != _output) {
-      if (_instant == INSTANT) _output = _input;
+    if (_input ^ _output) {
+      if (_instant) _output = _input;
       _debouncing = true;
     }
   }
-  _rising = _output & !_prevOutput;
-  _falling = !_output & _prevOutput;
+  _rising = _output & ~_prevOutput;
+  _falling = ~_output & _prevOutput;
   return _output;
 }
 
