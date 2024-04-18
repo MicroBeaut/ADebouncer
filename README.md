@@ -3,6 +3,7 @@
 [![Spell-Check](https://github.com/MicroBeaut/ADebouncer/actions/workflows/Spell-Check.yml/badge.svg)](https://github.com/MicroBeaut/ADebouncer/actions/workflows/Spell-Check.yml)
 [![Compile-Examples](https://github.com/MicroBeaut/ADebouncer/actions/workflows/Compile-Examples.yml/badge.svg)](https://github.com/MicroBeaut/ADebouncer/actions/workflows/Compile-Examples.yml)
 ![Github](https://img.shields.io/github/v/release/MicroBeaut/ADebouncer)
+
 The advanced debounce removes the resulting ripple signal and provides a clean transition at its output with `delayed` and `instant` modes.
 
 ## Delayed Mode
