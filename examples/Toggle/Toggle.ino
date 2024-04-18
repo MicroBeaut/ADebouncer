@@ -1,3 +1,15 @@
+/*
+  This example is designed to have a set button and a reset button to Reset-Set the state.
+  - Declare debouncer for the set button. set the debounce as a delayed mode
+  - Declare debouncer for the reset button. Set the debounce as an instant mode
+
+  Both set and reset buttons have the same debounce period. in this example, will be set to debounce period for 1 second,
+  - To set the state, press the set button for 1 second.
+  - To reset the state, the state will be instantly reset after pressing the reset button.
+
+  The LED_BUILTIN will be updated with the state value.
+*/
+
 #include "ADebouncer.h"
 
 #define buttonPin 12        // Define the button input pin.

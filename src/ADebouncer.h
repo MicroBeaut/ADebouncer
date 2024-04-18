@@ -12,7 +12,7 @@
 
 #include <Arduino.h>
 
-#define ADEBOUNCER_VERSION "1.1.0"
+#define ADEBOUNCER_VERSION "1.1.1"
 #define ADEBOUNCER_AUTHOR "MicroBeaut"
 
 enum debounce_t : boolean {DELAYED, INSTANT};

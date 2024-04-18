@@ -1,3 +1,9 @@
+/*
+  Declare debounce mode as delayed mode.
+  Debounce the input signal from the button.
+  Toggle the state when pressing the button and update LED_BUILTIN with the toggle state.
+*/
+
 #include "ADebouncer.h"
 
 #define setPin          12    // Define the set input pin.
