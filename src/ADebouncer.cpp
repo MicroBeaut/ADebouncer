@@ -10,56 +10,60 @@
 #include "ADebouncer.h"
 
 ADebouncer::ADebouncer() {
-  _instant = DEFAULT_DEBOUNCE_MODE;
-  _debouncePeriod = MS2US(DEFAULT_DEBOUNCE_PERIOD);
-  _output = DEFAULT_INITIAL_OUTPUT;
+  _debounceMode = DEFAULT_DEBOUNCE_MODE;
+  _debouncePeriodMicros = MS2US(DEFAULT_DEBOUNCE_PERIOD);
+  _outputState = DEFAULT_INITIAL_OUTPUT;
 }
 
-void ADebouncer::mode(debounce_t instant, unsigned long debouncePeriod, boolean initOutput) {
-  _instant = instant;
-  _debouncePeriod = MS2US(debouncePeriod);
-  _output = initOutput;
+void ADebouncer::setMode(DebounceMode mode, unsigned long debouncePeriod, boolean initialOutputState) {
+  _debounceMode = mode;
+  _debouncePeriodMicros = MS2US(debouncePeriod);
+  _outputState = initialOutputState;
 }
 
 boolean ADebouncer::debounce(boolean input) {
   unsigned long currentTime = micros();
-  _prevInput = _input;
-  _prevOutput = _output;
-  _input = input;
-  if (_input ^ _prevInput) _debounceStartTime = currentTime;
-  if (_debouncing) {
+  _previousInputState = _inputState;
+  _previousOutputState = _outputState;
+  _inputState = input;
+  if (_inputState ^ _previousInputState) {
+    _debounceStartTime = currentTime;
+  }
+  if (_isDebouncing) {
     unsigned long elapsedTime = currentTime - _debounceStartTime;
-    if (elapsedTime >= _debouncePeriod) {
-      _debouncing = false;
-      _output = _input;
+    if (elapsedTime >= _debouncePeriodMicros) {
+      _isDebouncing = false;
+      _outputState = _inputState;
     }
   } else {
-    if (_input ^ _output) {
-      if (_instant) _output = _input;
-      _debouncing = true;
+    if (_inputState ^ _outputState) {
+      if (_debounceMode) {
+        _outputState = _inputState;
+      }
+      _isDebouncing = true;
     }
   }
-  _rising = _output & ~_prevOutput;
-  _falling = ~_output & _prevOutput;
-  return _output;
+  _risingEdge = _outputState & ~_previousOutputState;
+  _fallingEdge = ~_outputState & _previousOutputState;
+  return _outputState;
 }
 
-boolean ADebouncer::input() {
-  return _input;
+boolean ADebouncer::getInputState() {
+  return _inputState;
 }
 
-boolean ADebouncer::debouncing() {
-  return _debouncing;
+boolean ADebouncer::isDebouncing() {
+  return _isDebouncing;
 }
 
-boolean ADebouncer::debounced() {
-  return _output;
+boolean ADebouncer::getDebouncedOutput() {
+  return _outputState;
 }
 
-boolean ADebouncer::rising() {
-  return _rising;
+boolean ADebouncer::isRisingEdge() {
+  return _risingEdge;
 }
 
-boolean ADebouncer::falling() {
-  return _falling;
+boolean ADebouncer::isFallingEdge() {
+  return _fallingEdge;
 }

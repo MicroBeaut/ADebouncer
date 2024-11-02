@@ -12,45 +12,45 @@
 
 #include <Arduino.h>
 
-#define ADEBOUNCER_VERSION "1.1.1"
+#define ADEBOUNCER_VERSION "1.2.0"
 #define ADEBOUNCER_AUTHOR "MicroBeaut"
 
-enum debounce_t : boolean {DELAYED, INSTANT};
+enum DebounceMode : boolean {DELAYED, INSTANT};
 
-#define DEFAULT_DEBOUNCE_PERIOD 10        // Default debounce Period in milliseconds
-#define DEFAULT_DEBOUNCE_MODE   DELAYED   // Default debounce mode
+#define DEFAULT_DEBOUNCE_PERIOD 10        // Default debounce period in milliseconds
+#define DEFAULT_DEBOUNCE_MODE   DebounceMode::DELAYED   // Default debounce mode
 #define DEFAULT_INITIAL_OUTPUT  true      // Default initial output
 
 #ifndef MS2US
-#define MS2US(ms) (ms*1000UL)
+#define MS2US(ms) (ms * 1000UL)
 #endif  // MS2US
 
 class ADebouncer {
   private:
-    unsigned char _instant: 1;
-    unsigned char _debouncing: 1;
+    unsigned char _debounceMode: 1;
+    unsigned char _isDebouncing: 1;
 
-    unsigned char _input: 1;
-    unsigned char _prevInput: 1;
+    unsigned char _inputState: 1;
+    unsigned char _previousInputState: 1;
 
-    unsigned char _output: 1;
-    unsigned char _prevOutput: 1;
+    unsigned char _outputState: 1;
+    unsigned char _previousOutputState: 1;
 
-    unsigned char _rising: 1;
-    unsigned char _falling: 1;
+    unsigned char _risingEdge: 1;
+    unsigned char _fallingEdge: 1;
 
-    unsigned long _debouncePeriod;
+    unsigned long _debouncePeriodMicros;
     unsigned long _debounceStartTime;
 
   public:
     ADebouncer();
-    void mode(debounce_t instant, unsigned long debouncePeriod = DEFAULT_DEBOUNCE_PERIOD, boolean initOutput = DEFAULT_INITIAL_OUTPUT);
-    boolean debounce(boolean input);
-    boolean input();
-    boolean debouncing();
-    boolean debounced();
-    boolean rising();
-    boolean falling();
+    void setMode(DebounceMode mode, unsigned long debouncePeriod = DEFAULT_DEBOUNCE_PERIOD, boolean initialOutputState = DEFAULT_INITIAL_OUTPUT);
+    boolean debounce(boolean inputState);
+    boolean getInputState();
+    boolean isDebouncing();
+    boolean getDebouncedOutput();
+    boolean isRisingEdge();
+    boolean isFallingEdge();
 };
 
 #endif  // ADEBOUNCER_H

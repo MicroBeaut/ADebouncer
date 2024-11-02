@@ -1,23 +1,22 @@
 /*
-  Declare debounce mode as delayed mode.
-  Debounce the input signal from the button
-  and update LED_BUILTIN with the debounced state.
+  This code initializes a delayed debounce mode, debounces the button input signal,
+  and updates the state of the built-in LED accordingly.
 */
-
+ 
 #include "ADebouncer.h"
-
-#define buttonPin 2         // Define the button input pin.
-#define debouncePeroid 10   // Define the debounce period in milliseconds
-
-ADebouncer debouncer;       // Declare debouncer variable.
-
+ 
+#define BUTTON_INPUT_PIN 2    // Pin for the button input.
+#define DEBOUNCE_PERIOD_MS 10 // Debounce period in milliseconds.
+ 
+ADebouncer buttonDebouncer;   // Create a debouncer instance.
+ 
 void setup() {
-  pinMode(buttonPin, INPUT_PULLUP);               // Set the button mode as input pullup.
-  pinMode(LED_BUILTIN, OUTPUT);                   // Set the LED_BUILTIN mode as output.
-  debouncer.mode(DELAYED, debouncePeroid, HIGH);  // Set the debounce mode as delayed mode and debounce period as 10 ms, with the initial output in a HIGH state.
+  pinMode(BUTTON_INPUT_PIN, INPUT_PULLUP);  // Set the button input pin as input with pull-up.
+  pinMode(LED_BUILTIN, OUTPUT);             // Set the built-in LED pin as output.
+  buttonDebouncer.setMode(DELAYED, DEBOUNCE_PERIOD_MS, HIGH); // Set debounce mode to delayed with a 10ms period, starting with a HIGH output.
 }
-
+ 
 void loop() {
-  bool buttonState = debouncer.debounce(digitalRead(buttonPin));  // Save the debounced of the button state.
-  digitalWrite(LED_BUILTIN, buttonState);                         // Update LED_BUILTIN with the button state.
+  bool debouncedButtonState = buttonDebouncer.debounce(digitalRead(BUTTON_INPUT_PIN));  // Get the debounced button state.
+  digitalWrite(LED_BUILTIN, debouncedButtonState);                                      // Update the built-in LED with the debounced button state.
 }
