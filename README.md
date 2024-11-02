@@ -42,7 +42,7 @@ ADebouncer debouncer;
 ## Mode
 ### Syntax:
 ```c
-variableNam.mode(debounce_t debounceMode, unsigned long debouncePeriod, bool initOutput);
+variableNam.setMode(debounce_t debounceMode, unsigned long debouncePeriod, bool initOutput);
 ```
 
 ### Parameters
@@ -64,7 +64,7 @@ Initial output state.
 Define the debouncer in delayed mode with debounce period of 10 milliseconds and initial output with a HIGH state.
 
 ```c
-debouncer.mode(DELAYED, 10, HIGH);
+debouncer.setMode(DELAYED, 10, HIGH);
 ```
 
 ## Debounce
@@ -90,70 +90,70 @@ bool debounced = debouncer.debounce(digitalRead(buttonPin));
 
 ### Debouncing
 #### Syntax:
-*`bool debouncing = variable.debouncing();`*\
+*`bool debouncing = variable.isDebouncing();`*\
 Get the debouncing state.
 
 #### Example:
 ```c
-bool debouncing = debouncer.debouncing();
+bool debouncing = debouncer.isDebouncing();
 digitalWrite(LED_BUILTIN, debouncing);
 ```
 
 Or,
 
 ```c
-digitalWrite(LED_BUILTIN, debouncer.debouncing());
+digitalWrite(LED_BUILTIN, debouncer.isDebouncing());
 ```
 
-### Debounced
+### getDebouncedOutput
 #### Syntax:
-*`bool debounced = variable.debounced();`*\
+*`bool debounced = variable.getDebouncedOutput();`*\
 Get the debounced state.
 
 #### Example:
 ```c
-bool debounced = debouncer.debounced();
+bool debounced = debouncer.getDebouncedOutput();
 digitalWrite(LED_BUILTIN, debounced);
 ```
 
 Or,
 
 ```c
-digitalWrite(LED_BUILTIN, debouncer.debounced());
+digitalWrite(LED_BUILTIN, debouncer.getDebouncedOutput());
 ```
 
 ### Rising Edge of the output
 #### Syntax:
-*`bool risingEdge = variable.rising();`*\
+*`bool risingEdge = variable.isRisingEdge();`*\
 Get the rising edge of the output.
 
 #### Example:
 ```c
-bool risingEdge = debouncer.rising();
+bool risingEdge = debouncer.isRisingEdge();
 if (risingEdge) toggle = !toggle;
 ```
 
 Or,
 
 ```c
-if (debouncer.rising()) toggle = !toggle;
+if (debouncer.isRisingEdge()) toggle = !toggle;
 ```
 
 ### Falling Edge of the output
 #### Syntax:
-*`bool fallingEdge = variable.falling();`*\
+*`bool fallingEdge = variable.isFallingEdge();`*\
 Get the falling edge of the output.
 
 #### Example:
 ```c
-bool fallingEdge = debouncer.falling();
+bool fallingEdge = debouncer.isFallingEdge();
 if (fallingEdge) toggle = !toggle;
 ```
 
 Or,
 
 ```c
-if (debouncer.falling()) toggle = !toggle;
+if (debouncer.isFallingEdge()) toggle = !toggle;
 ```
 
 # Example
@@ -163,21 +163,21 @@ Declare debounce mode as delayed mode. Debounce the input signal from the button
 Click [ here](examples/Button/Button.ino) the Button sketch.
 ```c
 #include "ADebouncer.h"
-
-#define buttonPin 2         // Define the button input pin.
-#define debouncePeroid 10   // Define the debounce period in milliseconds
-
-ADebouncer debouncer;       // Declare debouncer variable.
-
+ 
+#define BUTTON_INPUT_PIN 2    // Pin for the button input.
+#define DEBOUNCE_PERIOD_MS 10 // Debounce period in milliseconds.
+ 
+ADebouncer buttonDebouncer;   // Create a debouncer instance.
+ 
 void setup() {
-  pinMode(buttonPin, INPUT_PULLUP);               // Set the button mode as input pullup.
-  pinMode(LED_BUILTIN, OUTPUT);                   // Set the LED_BUILTIN mode as output.
-  debouncer.mode(DELAYED, debouncePeroid, HIGH);  // Set the debounce mode as delayed mode and debounce period as 10 ms, with the initial output in a HIGH state.
+  pinMode(BUTTON_INPUT_PIN, INPUT_PULLUP);  // Set the button input pin as input with pull-up.
+  pinMode(LED_BUILTIN, OUTPUT);             // Set the built-in LED pin as output.
+  buttonDebouncer.setMode(DELAYED, DEBOUNCE_PERIOD_MS, HIGH); // Set debounce mode to delayed with a 10ms period, starting with a HIGH output.
 }
-
+ 
 void loop() {
-  bool buttonState = debouncer.debounce(digitalRead(buttonPin));  // Save the debounced of the button state.
-  digitalWrite(LED_BUILTIN, buttonState);                         // Update LED_BUILTIN with the button state.
+  bool debouncedButtonState = buttonDebouncer.debounce(digitalRead(BUTTON_INPUT_PIN));  // Get the debounced button state.
+  digitalWrite(LED_BUILTIN, debouncedButtonState);                                      // Update the built-in LED with the debounced button state.
 }
 ```
 
@@ -188,23 +188,23 @@ Click [ here](examples/Toggle/Toggle.ino) the Toggle sketch.
 ```c
 #include "ADebouncer.h"
 
-#define buttonPin 12        // Define the button input pin.
-#define debouncePeroid 10   // Define the debounce period in milliseconds
+#define BUTTON_INPUT_PIN 12     // Define the button input pin.
+#define DEBOUNCE_PERIOD_MS 10   // Define the debounce period in milliseconds
 
-ADebouncer debouncer;       // Declare debouncer variable.
-bool state;                 // Declare state variable.
+ADebouncer buttonDebouncer;       // Declare debouncer variable.
+bool state;                       // Declare state variable.
 
 void setup() {
-  pinMode(buttonPin, INPUT_PULLUP);               // Set the button mode as input pullup.
-  pinMode(LED_BUILTIN, OUTPUT);                   // Set the LED_BUILTIN mode as output.
-  debouncer.mode(DELAYED, debouncePeroid, HIGH);  // Set the debounce mode as delayed mode and debounce period, with the initial output in a HIGH state.
-  state = HIGH;                                   // Initial state in a HIGH state.
+  pinMode(BUTTON_INPUT_PIN, INPUT_PULLUP);                      // Set the button mode as input pullup.
+  pinMode(LED_BUILTIN, OUTPUT);                                 // Set the LED_BUILTIN mode as output.
+  buttonDebouncer.setMode(DELAYED, DEBOUNCE_PERIOD_MS, HIGH);   // Set the debounce mode as delayed mode and debounce period, with the initial output in a HIGH state.
+  state = HIGH;                                                 // Initial state is set to HIGH.
 }
 
 void loop() {
-  debouncer.debounce(digitalRead(buttonPin));   // Debounce input of the button state.
-  if (debouncer.falling()) state = !state;      // Toggle state of the state variable.
-  digitalWrite(LED_BUILTIN, state);             // Update LED_BUILTIN with the state.
+  buttonDebouncer.debounce(digitalRead(BUTTON_INPUT_PIN));  // Debounce input of the button state.
+  if (buttonDebouncer.isFallingEdge()) state = !state;      // Toggle state of the state variable.
+  digitalWrite(LED_BUILTIN, state);                         // Update LED_BUILTIN with the state.
 }
 ```
 
@@ -223,27 +223,32 @@ Click [ here](examples/ResetSet/ResetSet.ino) the ResetSet sketch.
 ```c
 #include "ADebouncer.h"
 
-#define setPin          12    // Define the set input pin.
-#define resetPin        11    // Define the reset input pin.
-#define debouncePeroid  1000  // Define the debounce period in milliseconds
+#define SET_PIN          12       // Define the set input pin.
+#define RESET_PIN        11       // Define the reset input pin.
+#define DEBOUNCE_PERIOD_MS  1000  // Define the debounce period in milliseconds
 
 ADebouncer setButton;       // Declare set debouncer variable.
 ADebouncer resetButton;     // Declare reset debouncer variable.
 bool state;                 // Declare state variable for ResetSet.
 
 void setup() {
-  pinMode(setPin, INPUT_PULLUP);                    // Set the button mode as input pullup.
-  pinMode(resetPin, INPUT_PULLUP);                  // Set the button mode as input pullup.
-  pinMode(LED_BUILTIN, OUTPUT);                     // Set the LED_BUILTIN mode as output.
-  setButton.mode(DELAYED, debouncePeroid, HIGH);    // Set the debounce mode as delayed mode and debounce period, with the initial output in a HIGH state.
-  resetButton.mode(INSTANT, debouncePeroid, HIGH);  // Set the debounce mode as instant mode and debounce period, with the initial output in a HIGH state.
-  state = LOW;                                      // Initial state in a LOW state.
+  pinMode(SET_PIN, INPUT_PULLUP);   // Set the button mode as input pullup.
+  pinMode(RESET_PIN, INPUT_PULLUP); // Set the button mode as input pullup.
+  pinMode(LED_BUILTIN, OUTPUT);     // Set the LED_BUILTIN mode as output.
+  setButton.setMode(DELAYED, DEBOUNCE_PERIOD_MS, HIGH);    // Set the debounce mode as delayed mode and debounce period, with the initial output in a HIGH state.
+  resetButton.setMode(INSTANT, DEBOUNCE_PERIOD_MS, HIGH);  // Set the debounce mode as instant mode and debounce period, with the initial output in a HIGH state.
+  state = LOW;                                          // Initial state in a LOW state.
 }
 
 void loop() {
-  setButton.debounce(digitalRead(setPin));                              // Debounce input of the set button state.
-  resetButton.debounce(digitalRead(resetPin));                          // Debounce input of the reset button state.
-  state = (state | !setButton.debounced()) & resetButton.debounced();   // Reset and Set the state
-  digitalWrite(LED_BUILTIN, state);                                     // Update LED_BUILTIN with the state.
+  // Debounce input of the set button state.
+  setButton.debounce(digitalRead(SET_PIN));
+  // Debounce input of the reset button state.
+  resetButton.debounce(digitalRead(RESET_PIN));
+
+  // Update the state based on set and reset button outputs.
+  state = (state | !setButton.getDebouncedOutput()) & resetButton.getDebouncedOutput();
+  // Update LED_BUILTIN with the state.
+  digitalWrite(LED_BUILTIN, state);
 }
 ```
